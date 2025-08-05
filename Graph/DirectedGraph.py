@@ -22,6 +22,8 @@ class Graph:
     def display(self):
         for i in self.adj_list.keys():
             print(f'{i} : {self.adj_list[i]}')
+        print(self.adj_list)
+
 
 graph = Graph()
 graph.insert_vertex('A')
