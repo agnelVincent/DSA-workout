@@ -5,40 +5,38 @@ class TrieNode:
 
 class Trie:
     def __init__(self):
-         self.root = TrieNode()
+        self.root = TrieNode()
 
-    def insert(self, word):
-        node = self.root
-        for char in word:
-            if char not in node.children:
-                node.children[char] = TrieNode()
-            node = node.children[char]
+    def insert(self , word):
+        current = self.root
+        for i in word:
+            if i not in current.children:
+                current.children[i] = TrieNode()
+            current = current.children[i]
 
-        node.is_end = True
+        current.is_end = True
 
     def autocomplete(self , prefix):
-        node = self.root
-        for char in prefix:
-            if char not in node.children:
-                return []
-            node = node.children[char]
         
-        results = []
+        current = self.root
+        for i in prefix:
+            if i not in current.children:
+                print('not found')
+                return
+            current = current.children[i]
 
+        word = []
         def dfs(node , path):
             if node.is_end:
-                results.append(''.join(path))
+                word.append(path)
             for char , child in node.children.items():
-                dfs(child , path + [char])
-        
-        dfs(node , list(prefix))
-        for i in results:
-            print(i)
+                dfs(child , path + char)
+
+        dfs(current , prefix)
+        return word
 
 trie = Trie()
-trie.insert("cat")
-trie.insert("cap")
-trie.insert("can")
-trie.insert("bat")
+for i in ["cat" , "cab" , "camel" , "cannon" , "catch"]:
+    trie.insert(i)
 
-trie.autocomplete('ca')
+print(trie.autocomplete('cat'))

@@ -6,39 +6,52 @@ class TrieNode:
 class Trie:
     def __init__(self):
         self.root = TrieNode()
-
+    
     def insert(self , word):
-        node = self.root
+        current = self.root
 
-        for char in word:
-            if char not in node.children:
-                node.children[char] = TrieNode()
-            node = node.children[char]
-
-        node.is_end = True
+        for i in word:
+            if i not in current.children:
+                current.children[i] = TrieNode()
+            current = current.children[i]
+        current.is_end = True
 
     def search(self , word):
-        node = self.root
-
-        for char in word:
-            if char not in node.children:
+        current = self.root
+        
+        for i in word:
+            if i not in current.children:
                 return False
-            node = node.children[char]
-            
-        return node.is_end 
+            current = current.children[i]
+        return current.is_end
     
     def starts_with(self , prefix):
-        node = self.root
+        current = self.root
 
-        for char in prefix:
-            if char not in node.children:
+        for i in prefix:
+            if i not in current.children:
                 return False
-            node = node.children[char]
-
+            current = current.children[i]
+        
         return True
     
+    def traverse(self):
+        words = []
+
+        def dfs(node , path):
+            if node.is_end:
+                words.append(path)
+            for char , child in node.children.items():
+                dfs(child , path + char)
+            
+        dfs(self.root , "")
+
+        return words
+
+    
     def delete(self , word):
-        def _delete(node ,word, depth):
+
+        def _delete(node , word , depth):
             if depth == len(word):
                 if not node.is_end:
                     return False
@@ -46,19 +59,21 @@ class Trie:
                 return len(node.children) == 0
             
             char = word[depth]
-
             
+            if char not in node.children:
+                return False
+            
+            should_delete = _delete(node.children[char] , word , depth+1)
 
-    
-    def traverse(self):
-        def dfs(node , path):
-            if node.is_end:
-                print(''.join(path))
-            for char , child in node.children.items():
-                dfs(child , path + [char])
-        dfs(self.root , [])
-    
-    
+            if should_delete:
+                del node.children[char]
+                return not node.is_end and len(node.children) == 0
+            
+            return False
+
+
+        _delete(self.root , word , 0)
+
     
 trie = Trie()
 trie.insert("cat")
@@ -72,5 +87,8 @@ print(trie.starts_with("ca"))
 print(trie.starts_with("ba")) 
 print(trie.starts_with("da")) 
 
-trie.traverse()
+
+print(trie.traverse())
+trie.delete('cat')
+print(trie.traverse())
 
