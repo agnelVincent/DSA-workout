@@ -1,30 +1,41 @@
-class Graph:
+class UndirectedGraph:
     def __init__(self):
         self.adj_list = {}
 
-    def insert_vertex(self , vertex):
-        if vertex in self.adj_list:
-            print('Vertex already exists')
-            return
-        
-        self.adj_list[vertex] = []
-
-    def insert_edges(self , vertex , edge):
+    def insert_vertex(self, vertex):
         if vertex not in self.adj_list:
-            self.insert_vertex(vertex)
+            self.adj_list[vertex] = []
+        else:
+            print(f"Vertex '{vertex}' already exists.")
 
-        if edge not in self.adj_list:
-            self.insert_vertex(edge)
+    def insert_edges(self, v1, v2):
+        if v1 == v2:
+            print("Self-loops are not allowed.")
+            return
 
-        self.adj_list[vertex].append(edge)
+        if v1 not in self.adj_list:
+            self.insert_vertex(v1)
+        if v2 not in self.adj_list:
+            self.insert_vertex(v2)
+
+        if v2 not in self.adj_list[v1]:
+            self.adj_list[v1].append(v2)
+        if v1 not in self.adj_list[v2]:
+            self.adj_list[v2].append(v1)
 
     def display(self):
-        for i in self.adj_list.keys():
-            print(f'{i} : {self.adj_list[i]}')
+        for vertex, edges in self.adj_list.items():
+            print(f"{vertex} : {edges}")
+        print(self.adj_list)
 
 
-graph = Graph()
+
+graph = UndirectedGraph()
 graph.insert_vertex('A')
-graph.insert_edges('A','B')
-graph.insert_edges('B','C')
+graph.insert_edges('A', 'B')
+graph.insert_edges('A', 'C')
+graph.insert_edges('C', 'D')
+graph.insert_edges('B', 'D')
+graph.insert_edges('A', 'B')  
+graph.insert_edges('A', 'A')  
 graph.display()
