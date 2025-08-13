@@ -13,6 +13,12 @@ class Graph:
         if edge not in self.adj_list[vertex]:  
             self.adj_list[vertex].append(edge)
 
+    def remove_edge(self , vertex , edge):
+        if edge not in self.adj_list[vertex]:
+            print('edge not asscociated with the vertex')
+            return
+        self.adj_list[vertex].remove(edge)
+
     def display(self):
         for vertex, edges in self.adj_list.items():
             print(f"{vertex} : {edges}")
