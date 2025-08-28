@@ -1,5 +1,3 @@
-from collections import deque
-
 class Node:
     def __init__(self , value):
         self.value = value
@@ -10,11 +8,11 @@ class BST:
     def __init__(self):
         self.root = None
         
-    def insert(self , value):
+    def insert(self ,value):
         if self.root is None:
             self.root = Node(value)
-            return 
-        
+            return
+            
         current = self.root
         
         while True:
@@ -29,22 +27,11 @@ class BST:
                     return
                 current = current.right
                 
-    def search(self , value):
-        node = self.root
-        while node:
-            if value == node.value:
-                return True
-            elif value <= node.value:
-                node = node.left
-            else:
-                node = node.right
-        return False
-                
     def inorder(self , node):
-        if node.left:
+        
+        if node:
             self.inorder(node.left)
-        print(node.value , end = ' ')
-        if node.right:
+            print(node.value , end = ' ')
             self.inorder(node.right)
             
     def preorder(self , node):
@@ -52,50 +39,54 @@ class BST:
             print(node.value , end = ' ')
             self.preorder(node.left)
             self.preorder(node.right)
-            
+    
     def postorder(self , node):
         if node:
             self.postorder(node.left)
             self.postorder(node.right)
-            print(node.value , end = ' ')
+            print(node.value ,end = ' ')
             
-    def bfs(self , node):
-        queue = deque()
-        queue.append(node)
-        while queue:
-            current = queue.popleft()
-            print(current.value , end = ' ')
-            if current.left:
-                queue.append(current.left)
-            if current.right:
-                queue.append(current.right)
-        
-            
-            
-tree = BST()
-for i in [5,1,9,10,4,20,23,2]:
-    tree.insert(i)
-    
-tree.inorder(tree.root)
-print()
-tree.preorder(tree.root)
-print()
-tree.postorder(tree.root)
-print()
-tree.bfs(tree.root)
-print()
-print(tree.search(9))
+    def bfs(self):
+        from collections import deque
 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+        queue = deque([self.root])
+
+        while queue:
+            node = queue.popleft()
+            print(node.value , end = ' ')
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+
+    def kth_largest(self , k):
+        self.count = 0
+        self.res = -1
+        
+        def dfs(node):
+            if not node or self.count >= k:
+                return
+            dfs(node.right)
+            self.count += 1
+            if self.count == k:
+                self.res = node.value
+                return
+            dfs(node.left)
+            
+        dfs(self.root)
+        return self.res
+            
+    
+bst = BST()
+for i in [5,1,2,10,9,8,3,6,4,7]:
+    bst.insert(i)
+
+bst.inorder(bst.root)
+print()
+bst.preorder(bst.root)
+print()
+bst.postorder(bst.root)
+print()
+print(bst.kth_largest(5))
+print()
+bst.bfs()
