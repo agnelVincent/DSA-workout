@@ -7,68 +7,137 @@ class SinglyLL:
     def __init__(self):
         self.head = None
 
-    def is_empty(self):
-        return self.head is None
-
-    def insert(self , value):
-        if self.is_empty():
+    def insert_at_beginning(self , value):
+        if self.head is None:
             self.head = Node(value)
             return
+        new_node = Node(value)
+        new_node.next = self.head
+        self.head = new_node
+
+    def insert_at_end(self , value):
+
+        if self.head is None:
+            return self.insert_at_beginning(value)
+        
         current = self.head
         while current.next:
             current = current.next
+        
+        current.next = Node(value)
+    
+    def insert_at_position(self , value , position):
+        if position == 1:
+            return self.insert_at_beginning(value)
+        
+        if self.is_empty():
+            return False
+        
+        current = self.head
+        i = 1
+
+        while current.next and i < position-1:
+            current = current.next
+            i += 1
+        
+        if not current:
+            print('index out of range')
+            return
+        
         new_node = Node(value)
+        new_node.next = current.next
         current.next = new_node
 
-    def delete_at_start(self):
+    def delete_at_beginning(self):
         if self.is_empty():
-            print('linked list empty')
-            return
+            return False
+        
         self.head = self.head.next
 
     def delete_at_end(self):
         if self.is_empty():
-            print('linked list empty')
+            return False
+        
+        current = self.head
+        while current.next.next:
+            current = current.next
+        
+        current.next = None
+
+    def delete_at_position(self , position):
+        if self.is_empty():
+            return False
+        
+        if position == 1:
+            return self.delete_at_beginning(position)
+        
+        i = 1
+        current = self.head
+
+        while current.next and i < position - 1:
+            current = current.next
+            i += 1
+        
+        if not current:
+            print('index not found')
+            return
+
+        if current.next.next:
+            current.next = current.next.next
             return
         
-    def delete_by_value(self , value):
-        if self.is_empty():
-            print('linked list empty')
-            return
-        if self.head.value == value:
-            return self.delete_at_start()
+        current.next = None
+
+    def reverse(self):
+
+        prev = None
         current = self.head
-        while current.next:
+
+        while current:
+            next_node = current.next
+            current.next = prev
             prev = current
-            current = current.next
-            if current.value == value:
-                prev.next = current.next
-                current.next = None
-                return
+            current = next_node
 
-    def traverse(self):
-        if self.is_empty():
-            print('linked list empty')
-            return
-        current = self.head
-        while current.next:
-            print(current.value , end=' ')
-            current = current.next
-        print(current.value)
-
+        self.head = prev
     
-linkedlist = SinglyLL()
+    def traverse(self):
+        current = self.head
+        while current:
+            print(current.value , end= ' ')
+            current = current.next
+        print()
 
-for i in [2,4,8,10,15]:
-    linkedlist.insert(i)
+    def is_empty(self):
+        return self.head is None
 
-linkedlist.traverse()
+ll = SinglyLL()
 
-linkedlist.delete_by_value(8)
-linkedlist.traverse()
-linkedlist.delete_at_start()
-linkedlist.traverse()
-linkedlist.delete_at_end()
-linkedlist.traverse()
-linkedlist.delete_by_value(10)
-linkedlist.traverse()
+for i in [3,5,7,9]:
+    ll.insert_at_end(i)
+
+ll.insert_at_position(2,1)
+
+ll.insert_at_beginning(1)
+
+ll.insert_at_position(4,4)
+
+ll.insert_at_position(6,6)
+
+ll.insert_at_position(8,8)
+
+ll.insert_at_end(10)
+
+ll.traverse()
+
+ll.delete_at_beginning()
+
+ll.delete_at_position(3)
+
+ll.delete_at_end()
+
+ll.traverse()
+
+ll.reverse()
+
+ll.traverse()

@@ -74,7 +74,7 @@ graph = Graph()
 graph.add_edge('A','B')
 graph.add_edge('B','C')
 graph.add_edge('C','D')
-# graph.add_edge('D','A')
+graph.add_edge('D','A')
 
 graph.bfs('A')
 
