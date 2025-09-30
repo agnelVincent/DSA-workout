@@ -110,6 +110,18 @@ class SinglyLL:
 
     def is_empty(self):
         return self.head is None
+    
+    def middle(self):
+        if self.is_empty():
+            return False
+        
+        slow = fast = self.head
+
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        return slow.value
 
 ll = SinglyLL()
 
@@ -141,3 +153,5 @@ ll.traverse()
 ll.reverse()
 
 ll.traverse()
+
+print(ll.middle())

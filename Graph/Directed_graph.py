@@ -73,10 +73,10 @@ class Graph:
     
 graph = Graph()
 
-graph.add_edge('A','B',directed = True)
-graph.add_edge('B','C',directed = True)
-graph.add_edge('C','D',directed = True)
-graph.add_edge('D','A',directed = True)
+graph.add_edge('A','B')
+graph.add_edge('B','C')
+graph.add_edge('C','D')
+graph.add_edge('D','A')
 
 graph.bfs('A')
 graph.dfs('A')

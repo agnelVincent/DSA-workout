@@ -58,6 +58,36 @@ class BST:
                 queue.append(node.left)
             if node.right:
                 queue.append(node.right)
+    
+    def delete(self , val):
+        def _delete(node , val):
+
+            if not node:
+                return node
+            
+            if val < node.value:
+                node.left = _delete(node.left , val)
+            elif val > node.value:
+                node.right = _delete(node.right , val)
+            else:
+                if not node.left and not node.right:
+                    return None
+                if not node.left:
+                    return node.right
+                if not node.right:
+                    return node.left
+                succ = self._find_min(node.right)
+                node.value = succ.value
+                node.right = _delete(node.right , succ.value)
+            return node
+        self.root = _delete(self.root , val)
+
+    def _find_min(self , node):
+        current = node
+        while current.left:
+            current = current.left
+        return current
+
 
     def kth_largest(self , k):
         self.count = 0
@@ -90,3 +120,6 @@ print()
 print(bst.kth_largest(5))
 print()
 bst.bfs()
+print()
+bst.delete(1)
+bst.inorder(bst.root)
